@@ -5,16 +5,16 @@ using namespace std;
 struct NO {
 	int valor;
 	NO* prox;
+	NO* aux = NULL;
 };
 
-NO* inicio = NULL;
-NO* fim = NULL;
+NO* topo = NULL;
 
 // headers
 void menu();
 void inicializar();
-void insere();
-void remove();
+void pop();
+void push();
 //--------------------------
 
 
@@ -28,12 +28,13 @@ void menu()
 	int op = 0;
 	while (op != 4) {
 		system("cls"); // somente no windows
-		cout << "Menu Fila";
+		cout << "Menu Pilha";
 		cout << endl << endl;
-		cout << "1 - Inicializar Fila \n";
-		cout << "2 - Inserir elemento \n";
-		cout << "3 - Remover elemento  \n";
+		cout << "1 - Inicializar Pilha \n";
+		cout << "2 - Inserir elemento (Push) \n";
+		cout << "3 - Remover elementos (Pop) \n";
 		cout << "4 - Sair \n";
+
 
 		cout << "Opcao: ";
 		cin >> op;
@@ -42,9 +43,9 @@ void menu()
 		{
 		case 1: inicializar();
 			break;
-		case 2:insere();
+		case 2:push();
 			break;
-		case 3: remove();
+		case 3: pop();
 			break;
 		case 4:
 			return;
@@ -59,42 +60,45 @@ void menu()
 void inicializar()
 {
 
-	// se a lista já possuir elementos
+	// se a lista jï¿½ possuir elementos
 	// libera a memoria ocupada
-	NO* aux = inicio;
+	NO* aux = topo;
 	while (aux != NULL) {
 		NO* paraExcluir = aux;
 		aux = aux->prox;
 		free(paraExcluir);
 	}
 
-	inicio = NULL;
-	fim = NULL;
-	cout << "Fila inicializada \n";
+	topo = NULL;
+	cout << "Pilha inicializada \n";
 
 }
 
 
-void insere()
+void push()
 {
-	// aloca memoria dinamicamente para o novo elemento
-	NO* novo = (NO*)malloc(sizeof(NO));
-	if (novo == NULL)
-	{
-		return;
-	}
+    NO* novo = (NO*)malloc(sizeof(NO));
+    if (novo == NULL)
+    {
+        return;
+    }
 
-	cout << "Digite o elemento: ";
-	cin >> novo->valor;
-	novo->prox = NULL;
-
-
+    cout << "Digite o elemento: ";
+    cin >> novo->valor;
+    novo->prox = topo; 
+    topo = novo; 
 }
 
-void remove()
+void pop()
 {
+    if (topo == NULL) 
+    {
+        cout << "Pilha Vazia\n";
+        return;
+    }
 
-
-
+    cout << "Elemento removido: " << topo->valor << endl;
+    NO* paraExcluir = topo;
+    topo = topo->prox; 
+    free(paraExcluir); 
 }
-
